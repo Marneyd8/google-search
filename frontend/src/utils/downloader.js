@@ -1,24 +1,39 @@
-export const downloadJson = (results) => {
-  const dataStr =
-    "data:text/json;charset=utf-8," +
-    encodeURIComponent(JSON.stringify(results));
-  const downloadAnchorNode = document.createElement("a");
-  downloadAnchorNode.setAttribute("href", dataStr);
-  downloadAnchorNode.setAttribute("download", "results.json");
-  document.body.appendChild(downloadAnchorNode);
-  downloadAnchorNode.click();
-  downloadAnchorNode.remove();
+// Utility function to clean text
+const cleanText = (text) => text.replace(/[\r\n\t]/g, "").trim();
+
+// Utility function to clean results
+const cleanResults = (results) =>
+  results.map(({ title, link }) => ({
+    title: cleanText(title),
+    link: cleanText(link),
+  }));
+
+// Function to create download
+const createDownload = (content, mimeType, fileName) => {
+  const dataStr = `data:${mimeType},${encodeURIComponent(content)}`;
+  const anchor = document.createElement("a");
+  anchor.href = dataStr;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
 };
 
+// JSON download function
+export const downloadJson = (results) => {
+  const content = JSON.stringify(cleanResults(results));
+  createDownload(content, "application/json;charset=utf-8", "results.json");
+};
+
+// CSV download function
 export const downloadCsv = (results) => {
-  let csvContent = "data:text/csv;charset=utf-8,";
-  results.forEach((result) => {
-    csvContent += `${result.title},${result.link}\n`;
+  const cleanedResults = cleanResults(results);
+  let csvContent = '\uFEFF"Title","Link"\n';
+
+  cleanedResults.forEach((result) => {
+    const escapedTitle = result.title.replace(/"/g, '""');
+    const escapedLink = result.link.replace(/"/g, '""');
+    csvContent += `"${escapedTitle}","${escapedLink}"\n`;
   });
-  const downloadAnchorNode = document.createElement("a");
-  downloadAnchorNode.setAttribute("href", encodeURI(csvContent));
-  downloadAnchorNode.setAttribute("download", "results.csv");
-  document.body.appendChild(downloadAnchorNode);
-  downloadAnchorNode.click();
-  downloadAnchorNode.remove();
+  createDownload(csvContent, "text/csv;charset=utf-8", "results.csv");
 };
