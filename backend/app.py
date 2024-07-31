@@ -7,7 +7,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3001"])
 
-def get_page_title(url):
+def get_page_title(url: str) -> str:
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -16,7 +16,7 @@ def get_page_title(url):
         return 'Error - could not find title',
 
 @app.route('/search', methods=['GET'])
-def search_google():
+def search_google() -> None:
     query = request.args.get('q')
     results = []
     for url in search(query, num_results=10):
