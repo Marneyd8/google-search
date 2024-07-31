@@ -1,0 +1,5 @@
+Flask
+googlesearch-python
+flask_cors
+bs4
+flask_cors
