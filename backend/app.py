@@ -14,7 +14,7 @@ def get_page_title(url: str) -> str:
         soup = BeautifulSoup(response.content, 'html.parser')
         return soup.find('title').text if soup.find('title') else 'No title'
     except Exception:
-        return 'Error - could not find title',
+        return 'Error - could not find title'
 
 
 @app.route('/search', methods=['GET'])
