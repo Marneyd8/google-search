@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
 from googlesearch import search
-import requests
-from bs4 import BeautifulSoup
 from flask_cors import CORS
 import os
 
@@ -9,23 +7,14 @@ app = Flask(__name__, static_folder='build')
 CORS(app, origins=["http://localhost:3000"])
 
 
-def get_page_title(url: str) -> str:
-    try:
-        response = requests.get(url)
-        soup = BeautifulSoup(response.content, 'html.parser')
-        return soup.find('title').text if soup.find('title') else 'No title'
-    except Exception:
-        return 'Error - could not find title'
-
-
 @app.route('/search', methods=['GET'])
 def search_google() -> None:
     query = request.args.get('q')
     results = []
-    for url in search(query, num_results=10):
+    for resutl in search(query, num_results=10, lang='cz', advanced=True):
         results.append({
-            'link': url,
-            'title': get_page_title(url),
+            'link': resutl.url,
+            'title': resutl.title
         })
     print(results)
     return jsonify(results)
