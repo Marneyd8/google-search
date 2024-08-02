@@ -27,7 +27,7 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/search?q=${query}`);
+      const response = await fetch(`/search?q=${query}`);
       console.log(response);
       if (response.status === 418) {
         setResults(mockData);
