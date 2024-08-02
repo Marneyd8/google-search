@@ -64,7 +64,7 @@ function App() {
       </form>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      {results != null && results.length == 0 && <p>No search results</p>}
+      {results != null && results.length === 0 && <p>No search results</p>}
       <div className="results__container">
         {results != null &&
           results.map((result, index) => (

@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from flask_cors import CORS
 import os
 
-app = Flask(__name__, static_folder='../frontend/build')
+app = Flask(__name__, static_folder='build')
 CORS(app, origins=["http://localhost:3000"])
 
 def get_page_title(url: str) -> str:
