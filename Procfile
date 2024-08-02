@@ -1,2 +1,2 @@
-web: cd backend && gunicorn app:app
-frontend: cd frontend && npm start
+web: gunicorn app:app
+frontend: npm start
