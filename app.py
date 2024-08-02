@@ -1,21 +1,22 @@
 from flask import Flask, request, jsonify, send_from_directory
-from googlesearch import search
 from flask_cors import CORS
+from googlesearch import search
 import os
 
 app = Flask(__name__, static_folder='build')
-CORS(app, origins=["http://localhost:3000"])
+CORS(app)
 
 
 @app.route('/search', methods=['GET'])
-def search_google() -> None:
+def search_google():
     query = request.args.get('q')
     results = []
     print(query)
-    for resutl in search(query, num_results=10, lang='cz', advanced=True):
+    for result in search(query, num_results=10, lang='cs', advanced=True):
         results.append({
-            'link': resutl.url,
-            'title': resutl.title
+            'link': result.url,
+            'title': result.title,
+            'description': result.description
         })
     print(results)
     return jsonify(results)
