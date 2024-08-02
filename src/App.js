@@ -27,6 +27,7 @@ function App() {
     setError(null);
 
     try {
+      console.log(query);
       const response = await fetch(`/search?q=${query}`);
       console.log(response);
       if (response.status === 418) {
