@@ -3,3 +3,4 @@ gunicorn
 requests
 beautifulsoup4
 flask-cors
+googlesearch-python
