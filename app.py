@@ -11,6 +11,7 @@ CORS(app, origins=["http://localhost:3000"])
 def search_google() -> None:
     query = request.args.get('q')
     results = []
+    print(query)
     for resutl in search(query, num_results=10, lang='cz', advanced=True):
         results.append({
             'link': resutl.url,
