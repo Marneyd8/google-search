@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
-import { downloadCsv, downloadJson } from "./utils/downloader";
+import DownloadButtons from "./components/DownloadButtons.tsx";
+import ResultsList from "./components/ResultsList.tsx";
+import SearchForm from "./components/SearchForm.tsx";
 
-// Google has a limit for number of API calls
+// Mock data to simulate API response when limits are reached
 const mockData = [
   { link: "http://example.com/1", title: "Mock Title 1" },
   { link: "http://example.com/2", title: "Mock Title 2" },
@@ -48,46 +50,18 @@ function App() {
   return (
     <div className="app">
       <h1 className="app__header">Google Search</h1>
-      <form className="search__form" onSubmit={handleSearch}>
-        <label className="search__label">
-          Klíčové slovo:
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="search__input"
-            placeholder="Enter search term..."
-          />
-        </label>
-        <button type="submit" className="search__button">
-          Vyhledat
-        </button>
-      </form>
+      <SearchForm
+        query={query}
+        setQuery={setQuery}
+        handleSearch={handleSearch}
+      />
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      {results != null && results.length === 0 && <p>No search results</p>}
-      <div className="results__container">
-        {results != null &&
-          results.map((result, index) => (
-            <div key={index} className="result__item">
-              <h2 className="result__title">{result.title}</h2>
-              <a href={result.link} className="result__link">
-                {result.link}
-              </a>
-            </div>
-          ))}
-      </div>
+      <ResultsList results={results} />
       {isMock && (
-        <p>Too many API calls, these are just a mock data for testing</p>
+        <p>Too many API calls, these are just mock data for testing</p>
       )}
-      <div className="buttons__container">
-        <button onClick={() => downloadJson(results)} className="download">
-          Stáhnout JSON
-        </button>
-        <button onClick={() => downloadCsv(results)} className="download">
-          Stáhnout CSV
-        </button>
-      </div>
+      <DownloadButtons results={results} />
     </div>
   );
 }
